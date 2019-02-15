@@ -2,12 +2,15 @@ package com.ncu.main;
 import com.ncu.classdefinitions.*;
 import java.io.*;
 import java.util.*;
+import com.ncu.validators.*;
+import com.ncu.exceptions.*;
 public class UserDriver{
 	public static void main(String[] args){
 		int ch, c, cnt=0;
 		File f2;
 		String name;
 		String pass;
+		NameValidator z = new NameValidator();
 		User u[] = new User[200];
 		Scanner sc = new Scanner(System.in);
 		int key;
@@ -18,35 +21,83 @@ public class UserDriver{
 		ch = sc.nextInt();
 		switch(ch){
 			case 1 : {
+				int flag = 1;
+				boolean v = true;
+				boolean h = false;
+				try{
 				f2 = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\userinfo\\users.txt");
 					Scanner inputStream = new Scanner(f2);
 		        while(inputStream.hasNextLine()){
 		        	cnt++;
 		        }
 		        inputStream.close();
+
+		    }
+		    catch(Exception e){
+		    	e.printStackTrace();
+		    }
+		    do{
 				System.out.println("Enter username: " + "\n");
 				name = sc.nextLine();
 				System.out.println("Enter password: " + "\n");
 				pass = sc.nextLine();
+				v = z.nameValidator(name, pass);
+				if(v==true)
+					flag = 0;
+				if(v==false){
+					System.out.println("Enter any key to try again or 0 to go back to Main Menu: " + "\n");
+					flag = sc.nextInt();
+				}
+			}while(flag!=0);
+			if(v==false)
+				break;
+				User x = new User(name, pass, cnt);
+				h = x.SearchU(name);
+				if(h==false){
 				u[cnt] = new User(name, pass, cnt);
+				try{
+			    f2 = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\userinfo\\users.txt");
 				FileWriter fout = new FileWriter(f2,true);
 				BufferedWriter bout = new BufferedWriter(fout);
-				bout.write(cnt + "." + name + "   " + pass);
+				bout.write((cnt+1) + "." + name + "   " + pass);
 				bout.newLine();
 				u[cnt].Create(cnt);
 				bout.close();
+			} catch(Exception e){
+			e.printStackTrace();
+		}
+		}
+		
+			if(h==true){
+				System.out.println("The username is already in use. Pick another username or login if you already have an account" + "\n");
+			}
+
 
 			}
 			break;
 			case 2 : {
+				boolean w = true;
 				int n;
+				int ind=1;
 				int a, o, i=0;
 				String t;
 				String p;
+				boolean h = true;
+				do{
 				System.out.println("Enter username: " + "\n");
 				name = sc.nextLine();
 				System.out.println("Enter password: " + "\n");
 				pass = sc.nextLine();
+				w = z.nameValidator(name, pass);
+				if(w==false){
+					System.out.println("Enter any key to try again or 0 to go back to Main Menu: " + "\n");
+					ind = sc.nextInt();
+				}
+
+			}while(ind!=0);
+			if(w==false)
+				break;
+				try{
 				f2 = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\userinfo\\users.txt");
 			    Scanner inputStream = new Scanner(f2);
 				while(inputStream.hasNextLine()){
@@ -55,8 +106,9 @@ public class UserDriver{
 		            for(a=0;a<sr.length();a++){
 		            	if(sr.charAt(a)==' '){
 		            		a--;
+		            		break;
 		            	}
-		            	break;
+		            	
 
 		            }
 		            t = new String(sr.substring(2,a));
@@ -66,13 +118,14 @@ public class UserDriver{
 		            i++;
 		        }
 		        inputStream.close();
+		    }
+		    catch(Exception e){
+		    	e.printStackTrace();
+		    }
 		        for(o=0;o<=i;o++){
-		        	boolean h = u[i].Search(name, pass);
+		        	h = u[o].Search(name, pass);
 		        	if(h==true){
-		        		n = i;
-		        		break;
-		        	}
-		        }
+		        		n = o;
 		        int skey;
 				do{
 				System.out.println("Select from Operations Menu: " + "\n");
@@ -105,8 +158,16 @@ public class UserDriver{
 				System.out.println("Enter 0 to exit Operations Menu or any other key to go back to Operations Menu:  " + "\n");
 				skey = sc.nextInt();
 			}while(skey!=0);
+		        		break;
+		        	}
+		        }
+		        if(h==false){
+		        	System.out.println("Incorrect  username or password. Try again" + "\n");
+		        }
+		        
 
 			}
+			break;
 			default : System.out.println("Invalid choice" + "\n");
 
 		}

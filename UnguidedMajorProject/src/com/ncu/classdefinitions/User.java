@@ -18,7 +18,7 @@ public class User{
 		this.f = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\todofiles\\" + fileName);
 	}
 	public void Display(int i){
-		String fileName = new String("todo"+i+".txt");
+		String fileName = new String("todo"+(i+1)+".txt");
 		try{
 		f = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\todofiles\\" + fileName);	
 		FileReader fin = new FileReader(f);
@@ -34,7 +34,7 @@ public class User{
 		}
 	}
 	public void Create(int j){
-		String fileName = new String("todo"+j+".txt");
+		String fileName = new String("todo"+(j+1)+".txt");
 		int i=0;
 		int ans;
 			try{
@@ -59,7 +59,7 @@ public class User{
 		}
 	} 
 	public void Delete(int j, int k){
-		String fileName = new String("todo"+j+".txt");
+		String fileName = new String("todo"+(j+1)+".txt");
 		int i=0;
 		Scanner sc = new Scanner(System.in);
 		try{
@@ -87,7 +87,7 @@ public class User{
 	
 	}
 	public void Update(int j, int k){
-		String fileName = new String("todo"+j+".txt");
+		String fileName = new String("todo"+(j+1)+".txt");
 		int i = 0;
 		try{
 		File f1 = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\todofiles\\temp.txt");
@@ -121,7 +121,7 @@ public class User{
 
 }
  public void Add(int j){
- 	String fileName = new String("todo"+j+".txt");
+ 	String fileName = new String("todo"+(j+1)+".txt");
  	int i=0;
 	int ans;
 			try{
@@ -172,6 +172,33 @@ public class User{
 		                 res = true;
 		                 break;
 		            }
+		        } inputStream.close();
+    } catch(Exception e){
+    	e.printStackTrace();
+    }
+    return res;
+
+ }
+ public boolean SearchU(String userName){
+ 	boolean res = false;
+ 	String n;
+ 	int a;
+ 	File f2 = new File("C:\\Users\\Apoorva Malhotra\\MajorProject-ToDoList-\\UnguidedMajorProject\\userinfo\\users.txt");
+ 	try{
+    	Scanner inputStream = new Scanner(f2);
+    	while(inputStream.hasNextLine()){
+    	String sr = inputStream.nextLine();
+    	for(a=0;a<sr.length();a++){
+		            	if(sr.charAt(a)==' '){
+		            		a--;
+		                    break;
+		                }
+
+		            }
+		            n = new String(sr.substring(2,a));
+		            res = n.equals(this.userName);
+		            if(res==true)
+		                 break;
 		        } inputStream.close();
     } catch(Exception e){
     	e.printStackTrace();
